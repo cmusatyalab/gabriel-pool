@@ -12,10 +12,6 @@ A cognitive assistant that helps a pool player aim.
 ## Client
 An Android client is available on [Google Play](https://play.google.com/store/apps/details?id=edu.cmu.cs.gabrielclient). The source code is available [here](https://github.com/cmusatyalab/gabriel/tree/new-gabriel/android-client).
 
-[![Google Play Store][playstore-badge]][playstore-link]
-
-Google Play and the Google Play logo are trademarks of Google LLC.
-
 ## Server
 Running the server application using Docker is advised. If you want to install from source, please see [Dockerfile](Dockerfile) for details.
 
