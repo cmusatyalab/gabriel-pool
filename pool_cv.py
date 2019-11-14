@@ -21,12 +21,10 @@
 
 import cv2
 import numpy as np
-import os
-import sys
-import time
+import logging
 import zhuocv as zc
 
-current_milli_time = lambda: int(round(time.time() * 1000))
+logger = logging.getLogger(__name__)
 
 
 def _detect_table(img):
@@ -112,7 +110,7 @@ def _detect_cue(img, mask_tables, mask_balls):
 
     ## find cue bottom
     # the cue detected initially may not have reached the bottom of the image
-    for i in xrange(10):
+    for i in range(10):
         mask_cue_hand = zc.expand_with_bound(mask_cue_hand, cv2.bitwise_not(mask_bluer))
     mask_cue_bottom = mask_cue_hand.copy()
     mask_cue_bottom[:-2, :] = 0
@@ -227,7 +225,7 @@ def _detect_aim_point(cue, CO_balls, pocket):
     p_aim = object_ball[0] # set initial aim point to object ball center
     # because the angle should be angle between pocket-to-OB line and aim line, but not CTC (center to center) line,
     # we need to iterate several times to get the correct fraction
-    for iteration in xrange(3): # 3 is an arbitrary number here
+    for iteration in range(3): # 3 is an arbitrary number here
         dist_pocket2aim_line = zc.calc_triangle_area(cue_ball[0], p_aim, pocket) * 2 / zc.euc_dist(cue_ball[0], p_aim)
         dist_pocket2aim_point = zc.euc_dist(p_aim, pocket)
         angle = np.arcsin(dist_pocket2aim_line / dist_pocket2aim_point)
@@ -273,8 +271,8 @@ def process(img):
 def get_guidance(img, cue, CO_balls, pocket):
     PARA = int(float(img.shape[1]) / 640 * 8 + 0.5)
     p_aim, p_aimed = _detect_aim_point(cue, CO_balls, pocket)
-    logging.info(p_aim)
-    logging.info(p_aimed)
+    logger.info(p_aim)
+    logger.info(p_aimed)
 
     if abs(p_aim[0] - p_aimed[0]) < PARA:
         return "good"

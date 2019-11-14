@@ -24,10 +24,13 @@ from gabriel_server.local_engine import runner
 from pool_engine import PoolEngine
 from pool_engine import ENGINE_NAME
 import argparse
+import logging
 
 DEFAULT_PORT = 9099
 DEFAULT_NUM_TOKENS = 2
 INPUT_QUEUE_MAX_SIZE = 60
+
+logging.basicConfig(level=logging.INFO)
 
 
 def main():

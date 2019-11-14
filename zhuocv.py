@@ -133,7 +133,7 @@ def get_mask(img, rtn_type = "mask", th = 0):
     img_shape = img.shape
     if len(img_shape) > 2 and img_shape[2] > 1: # color image
         mask = np.zeros(img_shape[0:2], dtype = bool)
-        for i in xrange(img_shape[2]):
+        for i in range(img_shape[2]):
             mask = np.bitwise_or(mask, img[:,:,i] > th)
     else:
         mask = img > th
@@ -414,7 +414,7 @@ def display_image(display_name, img, wait_time = -1, is_resize = True, resize_me
         elif resize_scale > 0:
             img_display = cv2.resize(img, (width * resize_scale, height * resize_scale), interpolation = cv2.INTER_NEAREST)
         else:
-            print "Unexpected parameter in image display. About to exit..."
+            print("Unexpected parameter in image display. About to exit...")
             sys.exit()
     else:
         img_display = img
@@ -561,7 +561,7 @@ def get_corner_pts(bw, perimeter = None, center = None, method = 'line', is_debu
             for line in lines:
                 pt1 = (line[0], line[1])
                 pt2 = (line[2], line[3])
-                print (pt1, pt2)
+                print((pt1, pt2))
                 cv2.line(img, pt1, pt2, (255, 255, 255), 1)
             cv2.namedWindow('test')
             display_image('test', img)
@@ -577,7 +577,7 @@ def get_corner_pts(bw, perimeter = None, center = None, method = 'line', is_debu
             if flag:
                 new_lines.append(list(line))
         if is_debug:
-            print "four lines: %s" % new_lines
+            print("four lines: %s" % new_lines)
         if len(new_lines) != 4:
             return None
 
@@ -594,7 +594,7 @@ def get_corner_pts(bw, perimeter = None, center = None, method = 'line', is_debu
                 if dist < perimeter / 3:
                     corners.append(inter_p)
         if is_debug:
-            print "corners: %s" % corners
+            print("corners: %s" % corners)
         if len(corners) != 4:
             return None
 
@@ -615,7 +615,7 @@ def get_corner_pts(bw, perimeter = None, center = None, method = 'line', is_debu
         bl = list(bl)
         br = list(br)
         if is_debug:
-            print "ul: %s, ur: %s, bl: %s, br: %s" % (ul, ur, bl, br)
+            print("ul: %s, ur: %s, bl: %s, br: %s" % (ul, ur, bl, br))
 
         # some sanity check here
         if sanity_checks == "perspective":
@@ -715,7 +715,7 @@ def rotate(img, n_iterations = 2):
     img_ret = img
     rotation_degree = 0
     rotation_mtx = None
-    for iteration in xrange(n_iterations): # Sometimes need multiple iterations to get the rotation right
+    for iteration in range(n_iterations): # Sometimes need multiple iterations to get the rotation right
         bw = cv2.cvtColor(img_ret, cv2.COLOR_BGR2GRAY)
         edges = cv2.Canny(bw, 50, 100)
         rotation_degree_tmp = get_rotation_degree(edges)
@@ -723,7 +723,7 @@ def rotate(img, n_iterations = 2):
             rtn_msg = {'status' : 'fail', 'message' : 'Cannot get rotation degree'}
             return (rtn_msg, None)
         weight = 1
-        for i in xrange(3):
+        for i in range(3):
             bw[:] = img_ret[:,:,i][:]
             edges = cv2.Canny(bw, 50, 100)
             d = get_rotation_degree(edges)
@@ -805,7 +805,7 @@ def normalize_color(img, mask_info = None, mask_apply = None, method = 'hist', m
         mask_apply = mask_apply.astype(bool)
     img_ret = img.copy()
     if method == 'hist': # doesn't work well for over-exposed images
-        for i in xrange(3):
+        for i in range(3):
             v = img[:,:,i]
             hist,bins = np.histogram(v[mask_info].flatten(),256,[0,256])
             cdf = hist.cumsum()
@@ -818,7 +818,7 @@ def normalize_color(img, mask_info = None, mask_apply = None, method = 'hist', m
     elif method == 'grey':
         img = img.astype(float)
         max_rgb = 0
-        for i in xrange(3):
+        for i in range(3):
             v = img[:,:,i]
             #print v[mask_info].mean()
             v[mask_apply] = v[mask_apply] / v[mask_info].mean()
@@ -843,7 +843,7 @@ def normalize_color(img, mask_info = None, mask_apply = None, method = 'hist', m
 
         img = img.astype(float)
         max_rgb = 0
-        for i in xrange(3):
+        for i in range(3):
             v = img[:,:,i]
             v[mask_apply] = v[mask_apply] / v[mask_info].mean()
             img[:,:,i] = v
@@ -861,7 +861,7 @@ def normalize_color(img, mask_info = None, mask_apply = None, method = 'hist', m
     elif method == 'max':
         #b, g, r = cv2.split(img)
         #img = cv2.merge((b, g, r))
-        for i in xrange(3):
+        for i in range(3):
             v = img[:,:,i]
             max_v = np.percentile(v[mask], max_percentile)
             min_v = np.percentile(v[mask], min_percentile)
@@ -939,7 +939,7 @@ def detect_color(img_hsv, color, on_surface = False):
     elif color == "white":
         mask = color_inrange(None, 'HSV', hsv = img_hsv, S_U = 60, V_L = 190)
     else:
-        print "ERROR: color detection has specified an undefined color!!!!"
+        print("ERROR: color detection has specified an undefined color!!!!")
 
     return mask
 
@@ -1031,8 +1031,8 @@ def checkBlurByGradient(img, gradientPatchNBox = 5, gradientPatchWidth = 25, gra
     bw = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     n_rows, n_cols = img.shape[:2]
     max_gradients = 0
-    for i in xrange(gradientPatchNBox):
-        for j in xrange(gradientPatchNBox):
+    for i in range(gradientPatchNBox):
+        for j in range(gradientPatchNBox):
             top = (n_rows / ( 2 * gradientPatchNBox + 1)) * (2 * i + 1);
             left = (n_cols / ( 2 * gradientPatchNBox + 1)) * (2 * j + 1);
             bw_window = bw[top : top + gradientPatchHeight, left : left + gradientPatchWidth]

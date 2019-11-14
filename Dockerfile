@@ -3,10 +3,18 @@ MAINTAINER Satyalab, satya-group@lists.andrew.cmu.edu
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y python3 python3-pip
+RUN apt-get update && apt-get install -y \
+    python3 python3-pip \
+    libsm6 \
+    libxext6 \
+    libxrender-dev
+
+RUN python3 -m pip install --upgrade pip
+
+COPY . /gabriel-pool
 
 EXPOSE 9099
-WORKDIR /gabriel-ikea
+WORKDIR /gabriel-pool
 RUN python3 -m pip install -r requirements.txt
 
 ENTRYPOINT ["./main.py"]
