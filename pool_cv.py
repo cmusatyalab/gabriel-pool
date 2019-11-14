@@ -266,9 +266,9 @@ def process(img):
         if objects is not None:
             pocket, cnt_pocket = objects
     if rtn_msg['status'] == 'success':
-        return (rtn_msg, (cue, CO_balls, pocket))
+        return (cue, CO_balls, pocket)
     else:
-        return (rtn_msg, None)
+        return None
 
 def get_guidance(img, cue, CO_balls, pocket):
     PARA = int(float(img.shape[1]) / 640 * 8 + 0.5)
